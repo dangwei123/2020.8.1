@@ -1,0 +1,60 @@
+你有 k 个升序排列的整数数组。找到一个最小区间，使得 k 个列表中的每个列表至少有一个数包含在其中。
+
+我们定义如果 b-a < d-c 或者在 b-a == d-c 时 a < c，则区间 [a,b] 比 [c,d] 小。
+
+
+输入:[[4,10,15,24,26], [0,9,12,20], [5,18,22,30]]
+输出: [20,24]
+解释: 
+列表 1：[4, 10, 15, 24, 26]，24 在区间 [20,24] 中。
+列表 2：[0, 9, 12, 20]，20 在区间 [20,24] 中。
+列表 3：[5, 18, 22, 30]，22 在区间 [20,24] 中。
+
+
+给定的列表可能包含重复元素，所以在这里升序表示 >= 。
+1 <= k <= 3500
+-105 <= 元素的值 <= 105
+
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/smallest-range-covering-elements-from-k-lists
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+class Solution {
+    public int[] smallestRange(List<List<Integer>> nums) {
+        int n=nums.size();
+        int[] arr=new int[n];
+        int [] res=new int[2];
+        res[0]=-100000;
+        res[1]=100000;
+        while(true){
+            int min=nums.get(0).get(arr[0]);
+            int minIndex=0;
+            int max=nums.get(0).get(arr[0]);
+            int maxIndex=0;
+            for(int i=1;i<n;i++){
+                int num=nums.get(i).get(arr[i]);
+                if(num<min){
+                    min=num;
+                    minIndex=i;
+                }
+                if(num>max){
+                    max=num;
+                    maxIndex=i;
+                }
+            }
+            int num1=nums.get(maxIndex).get(arr[maxIndex]);
+            int num2=nums.get(minIndex).get(arr[minIndex]);
+            if(res[1]-res[0]>num1-num2){
+                res[1]=num1;
+                res[0]=num2;
+            }
+            arr[minIndex]++;
+            if(arr[minIndex]==nums.get(minIndex).size()){
+                break;
+            }
+        }
+        return res;
+    }
+}
+
